@@ -3,143 +3,154 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>หนังตะลุง AR</title>
+  <title>โครงการหนังตะลุง AR</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
   <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      overflow: hidden;
-      background: #111;
-      display: flex;
-      font-family: sans-serif;
+    body {
+      background: linear-gradient(to bottom, #1a1a1a, #0d0d0d);
+      font-family: 'Prompt', sans-serif;
     }
-    /* กล้องฝั่งซ้าย */
-    #webcam-container {
-      flex: 1;
-      position: relative;
-      background: black;
+    .hero-bg {
+      background: url("https://upload.wikimedia.org/wikipedia/commons/5/57/Nang_Talung.jpg") no-repeat center center/cover;
+      filter: brightness(0.5);
     }
-    #webcam {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transform: scaleX(-1); /* พลิกเหมือนกระจก */
+    .fade-in {
+      animation: fadeIn 2s ease-in-out forwards;
     }
-    /* ฝั่งขวา หนังตะลุง */
-    #puppet-container {
-      flex: 1;
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #222;
-      overflow: hidden;
-    }
-    #puppet {
-      display: none; /* ซ่อนไว้ก่อน */
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      max-height: 100%;
-      mix-blend-mode: lighten; /* ทำให้เข้ากับพื้นหลัง */
-    }
-    #status {
-      position: absolute;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.6);
-      color: white;
-      padding: 5px 15px;
-      border-radius: 10px;
-      font-size: 14px;
-    }
-    /* ปุ่มย้อนกลับ */
-    #backBtn {
-      position: fixed; /* ให้อยู่บนสุด */
-      top: 10px;
-      left: 10px;
-      background: #fcd34d;
-      color: black;
-      padding: 10px 15px;
-      border-radius: 8px;
-      font-weight: bold;
-      text-decoration: none;
-      z-index: 1000;
-      transition: background 0.3s;
-    }
-    #backBtn:hover {
-      background: #fbbf24;
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
     }
   </style>
 </head>
-<body>
-  <!-- ปุ่มย้อนกลับ -->
-  <a href="index.html" id="backBtn">⬅ ย้อนกลับ</a>
+<body class="text-white">
 
-  <!-- กล้อง -->
-  <div id="webcam-container">
-    <video id="webcam" autoplay playsinline></video>
-    <canvas id="canvas" style="display:none;"></canvas>
-    <div id="status">กำลังรอการเคลื่อนไหว...</div>
+  <!-- Navbar -->
+  <nav class="fixed w-full top-0 bg-black/70 backdrop-blur-md z-50 shadow-lg">
+    <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-3">
+      <h1 class="text-xl md:text-2xl font-bold text-yellow-400">หนังตะลุง AR</h1>
+      <div class="space-x-4 md:space-x-8">
+        <a href="#home" class="hover:text-yellow-400 transition">🏠 หน้าแรก</a>
+        <a href="#about" class="hover:text-yellow-400 transition">ℹ️ เกี่ยวกับเว็บ</a>
+        <a href="#info" class="hover:text-yellow-400 transition">🎭 การให้ข้อมูล</a>
+        <a href="#places" class="hover:text-yellow-400 transition">🌏 สถานที่</a>
+        <a href="AR.html" class="bg-yellow-500 px-4 py-2 rounded-xl text-black font-semibold hover:bg-yellow-400 transition">🚀 เริ่มใช้งาน</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="relative h-screen flex flex-col items-center justify-center text-center overflow-hidden">
+    <div class="absolute inset-0 hero-bg"></div>
+    <div class="absolute inset-0 bg-black/60"></div>
+    <div class="relative z-10 p-6 mt-16">
+      <h1 class="text-4xl md:text-6xl font-bold text-yellow-400 animate__animated animate__fadeInDown">
+        🎭 โครงการหนังตะลุง AR
+      </h1>
+      <p class="mt-4 text-lg md:text-xl text-gray-200 animate__animated animate__fadeInUp animate__delay-1s">
+        อนุรักษ์ศิลปะพื้นบ้านภาคใต้ด้วยเทคโนโลยี Augmented Reality
+      </p>
+      <a href="AR.html" class="mt-6 inline-block bg-yellow-500 text-gray-900 px-6 py-3 rounded-xl shadow-lg hover:bg-yellow-400 transition transform hover:scale-105 animate__animated animate__pulse animate__infinite">
+        🚀 เริ่มใช้งาน AR
+      </a>
+    </div>
+  </section>
+ <!-- วิธีการใช้งาน AR -->
+<section id="usage" class="p-10 md:p-20 bg-black fade-in">
+  <div class="max-w-5xl mx-auto text-center">
+    <h2 class="text-3xl font-bold text-yellow-400 mb-6">🛠️ วิธีการใช้งาน</h2>
+    <p class="text-gray-300 leading-relaxed mb-4">
+      การใช้งาน AR หนังตะลุงง่ายมาก เพียงทำตามขั้นตอนดังนี้:
+    </p>
+    <ol class="text-gray-300 list-decimal list-inside text-left max-w-2xl mx-auto mb-6 space-y-2">
+      <li>คลิกที่ปุ่ม <span class="text-yellow-400 font-semibold">🚀 เริ่มใช้งาน AR</span> บนหน้าแรก</li>
+      <li>อนุญาตให้เว็บเข้าถึงกล้องของคุณ</li>
+      <li>กล้องจะแสดงภาพของคุณทางฝั่งซ้าย และตัวละครหนังตะลุงทางฝั่งขวา</li>
+      <li>เมื่อคุณขยับหนังตะลุงจะแสดงขึ้นมาและโบกมือให้</li>
+    </ol>
+    <a href="AR.html" class="inline-block mt-4 bg-yellow-500 text-black px-6 py-3 rounded-xl shadow-lg hover:bg-yellow-400 transition transform hover:scale-105">
+      🚀 เริ่มใช้งาน AR
+    </a>
   </div>
+</section>
+  <!-- เกี่ยวกับเว็บ -->
+  <section id="about" class="p-10 md:p-20 bg-gray-900 fade-in">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-3xl font-bold text-yellow-400 mb-6">ℹ️ เกี่ยวกับเว็บ</h2>
+      <p class="text-gray-300 leading-relaxed">
+        เว็บไซต์นี้ถูกพัฒนาขึ้นเพื่อเป็นส่วนหนึ่งของโครงงาน โดยมีวัตถุประสงค์เพื่ออนุรักษ์และเผยแพร่ศิลปะการแสดง 
+        <span class="text-yellow-400 font-semibold">หนังตะลุง</span> ของภาคใต้ ผ่านเทคโนโลยี 
+        <span class="text-yellow-400">AR (Augmented Reality)</span>
+      </p>
+    </div>
+  </section>
 
-  <!-- GIF หนังตะลุง -->
-  <div id="puppet-container">
-    <img id="puppet" src="https://archive.clib.psu.ac.th/online-exhibition/talung/image/peak.gif" alt="หนังตะลุงโบกมือ">
-  </div>
+  <!-- การให้ข้อมูล -->
+  <section id="info" class="p-10 md:p-20 bg-black">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-3xl font-bold text-center text-yellow-400 mb-10">🎭 การให้ข้อมูล</h2>
+      <p class="text-gray-300 leading-relaxed text-center">
+        หนังตะลุงเป็นการแสดงพื้นบ้านภาคใต้ที่ใช้ตัวหนังที่ทำจากหนังวัวหรือหนังควาย 
+        ฉลุเป็นรูปตัวละครต่างๆ มีการเชิดให้เคลื่อนไหวไปตามท้องเรื่อง  
+        ประกอบดนตรีพื้นบ้าน เช่น กลอง ทับ กรับ และปี่ใน เพื่อสร้างความบันเทิงและสอดแทรกข้อคิดคติธรรม
+      </p>
+    </div>
+  </section>
 
-  <script>
-    (async function(){
-      const video = document.getElementById('webcam');
-      const canvas = document.getElementById('canvas');
-      const context = canvas.getContext('2d', { willReadFrequently: true });
-      const puppet = document.getElementById('puppet');
-      const status = document.getElementById('status');
+  <!-- สถานที่จัดแสดง -->
+  <section id="places" class="p-10 md:p-20 bg-gray-900">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl font-bold text-center text-yellow-400 mb-10">🌏 สถานที่จัดแสดงหนังตะลุง</h2>
+      <div class="grid md:grid-cols-3 gap-8">
 
-      let lastFrameData = null;
-      let motionTimeout = null;
+        <!-- Card 1 -->
+        <div class="bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:scale-105 transform transition">
+          <img src="https://www.thekommon.co/pyramid/2024/09/12_2.jpg"
+               alt="พิพิธภัณฑ์พื้นบ้านหนังตะลุง สุชาติ" 
+               class="w-full h-48 object-cover">
+          <div class="p-5">
+            <h2 class="text-xl font-bold text-yellow-300">พิพิธภัณฑ์พื้นบ้านหนังตะลุง สุชาติ</h2>
+            <p class="text-gray-400 mt-2 text-sm">จังหวัดนครศรีธรรมราช</p>
+            <a href="https://maps.app.goo.gl/XkEwcq9dwPXLR5be6" target="_blank"
+               class="inline-block mt-4 bg-yellow-500 text-black px-4 py-2 rounded-lg font-semibold hover:bg-yellow-400 transition">
+              📍 ดูใน Google Maps
+            </a>
+          </div>
+        </div>
 
-      // เปิดกล้อง
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        video.srcObject = stream;
-        video.addEventListener('loadedmetadata', () => {
-          canvas.width = video.videoWidth;
-          canvas.height = video.videoHeight;
-          requestAnimationFrame(checkMotion);
-        });
-      } catch(e) {
-        status.textContent = "ไม่สามารถเข้าถึงกล้องได้: " + e;
-      }
+        <!-- Card 2 -->
+        <div class="bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:scale-105 transform transition">
+          <img src="https://mpics.mgronline.com/pics/Images/556000014537201.JPEG"
+               alt="การแสดงหนังตะลุง ณ สงขลา"
+               class="w-full h-48 object-cover">
+          <div class="p-5">
+            <h2 class="text-xl font-bold text-yellow-300">โรงละครหนังตะลุง สงขลา</h2>
+            <p class="text-gray-400 mt-2 text-sm">จังหวัดสงขลา</p>
+            <a href="https://maps.app.goo.gl/3HoJj4jFZa3fZcbH8" target="_blank"
+               class="inline-block mt-4 bg-yellow-500 text-black px-4 py-2 rounded-lg font-semibold hover:bg-yellow-400 transition">
+              📍 ดูใน Google Maps
+            </a>
+          </div>
+        </div>
 
-      // ฟังก์ชันตรวจจับการเคลื่อนไหว
-      function checkMotion(){
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const currentFrameData = context.getImageData(0, 0, canvas.width, canvas.height).data;
+        <!-- Card 3 -->
+        <div class="bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:scale-105 transform transition">
+          <img src="https://commonmuze.com/sites/default/files/styles/display_asset/public/2023-12/dsc_1184.jpg?itok=6eKZr1Nb"
+               alt="การแสดงหนังตะลุง พัทลุง"
+               class="w-full h-48 object-cover">
+          <div class="p-5">
+            <h2 class="text-xl font-bold text-yellow-300">ลานแสดงหนังตะลุง พัทลุง</h2>
+            <p class="text-gray-400 mt-2 text-sm">จังหวัดพัทลุง</p>
+            <a href="https://maps.app.goo.gl/3Gm9cMGcC3L2PkT68" target="_blank"
+               class="inline-block mt-4 bg-yellow-500 text-black px-4 py-2 rounded-lg font-semibold hover:bg-yellow-400 transition">
+              📍 ดูใน Google Maps
+            </a>
+          </div>
+        </div>
 
-        if(lastFrameData){
-          let diff = 0;
-          for(let i=0; i<currentFrameData.length; i+=4){
-            diff += Math.abs(currentFrameData[i] - lastFrameData[i]);
-          }
-          const threshold = 1000000; // ค่าที่กำหนด
-          if(diff > threshold){
-            puppet.style.display = 'block';
-            status.textContent = "ตรวจพบการเคลื่อนไหว! 🎭";
-
-            clearTimeout(motionTimeout);
-            motionTimeout = setTimeout(() => {
-              puppet.style.display = 'none';
-              status.textContent = "กำลังรอการเคลื่อนไหว...";
-            }, 3000);
-          }
-        }
-        lastFrameData = currentFrameData;
-        requestAnimationFrame(checkMotion);
-      }
-    })();
-  </script>
+      </div>
+    </div>
+  </section>
 </body>
 </html>
