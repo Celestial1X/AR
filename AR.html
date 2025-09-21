@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>หนังตะลุง AR</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #111;
+      display: flex;
+      font-family: sans-serif;
+    }
+    /* กล้องฝั่งซ้าย */
+    #webcam-container {
+      flex: 1;
+      position: relative;
+      background: black;
+    }
+    #webcam {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scaleX(-1); /* พลิกเหมือนกระจก */
+    }
+    /* ฝั่งขวา หนังตะลุง */
+    #puppet-container {
+      flex: 1;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #222;
+      overflow: hidden;
+    }
+    #puppet {
+      display: none; /* ซ่อนไว้ก่อน */
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      max-height: 100%;
+      mix-blend-mode: lighten; /* ทำให้เข้ากับพื้นหลัง */
+    }
+    #status {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.6);
+      color: white;
+      padding: 5px 15px;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+    /* ปุ่มย้อนกลับ */
+    #backBtn {
+      position: fixed; /* ให้อยู่บนสุด */
+      top: 10px;
+      left: 10px;
+      background: #fcd34d;
+      color: black;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+      z-index: 1000;
+      transition: background 0.3s;
+    }
+    #backBtn:hover {
+      background: #fbbf24;
+    }
+  </style>
+</head>
+<body>
+  <!-- ปุ่มย้อนกลับ -->
+  <a href="index.html" id="backBtn">⬅ ย้อนกลับ</a>
+
+  <!-- กล้อง -->
+  <div id="webcam-container">
+    <video id="webcam" autoplay playsinline></video>
+    <canvas id="canvas" style="display:none;"></canvas>
+    <div id="status">กำลังรอการเคลื่อนไหว...</div>
+  </div>
+
+  <!-- GIF หนังตะลุง -->
+  <div id="puppet-container">
+    <img id="puppet" src="https://archive.clib.psu.ac.th/online-exhibition/talung/image/peak.gif" alt="หนังตะลุงโบกมือ">
+  </div>
+
+  <script>
+    (async function(){
+      const video = document.getElementById('webcam');
+      const canvas = document.getElementById('canvas');
+      const context = canvas.getContext('2d', { willReadFrequently: true });
+      const puppet = document.getElementById('puppet');
+      const status = document.getElementById('status');
+
+      let lastFrameData = null;
+      let motionTimeout = null;
+
+      // เปิดกล้อง
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+        video.addEventListener('loadedmetadata', () => {
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          requestAnimationFrame(checkMotion);
+        });
+      } catch(e) {
+        status.textContent = "ไม่สามารถเข้าถึงกล้องได้: " + e;
+      }
+
+      // ฟังก์ชันตรวจจับการเคลื่อนไหว
+      function checkMotion(){
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const currentFrameData = context.getImageData(0, 0, canvas.width, canvas.height).data;
+
+        if(lastFrameData){
+          let diff = 0;
+          for(let i=0; i<currentFrameData.length; i+=4){
+            diff += Math.abs(currentFrameData[i] - lastFrameData[i]);
+          }
+          const threshold = 1000000; // ค่าที่กำหนด
+          if(diff > threshold){
+            puppet.style.display = 'block';
+            status.textContent = "ตรวจพบการเคลื่อนไหว! 🎭";
+
+            clearTimeout(motionTimeout);
+            motionTimeout = setTimeout(() => {
+              puppet.style.display = 'none';
+              status.textContent = "กำลังรอการเคลื่อนไหว...";
+            }, 3000);
+          }
+        }
+        lastFrameData = currentFrameData;
+        requestAnimationFrame(checkMotion);
+      }
+    })();
+  </script>
+</body>
+</html>
