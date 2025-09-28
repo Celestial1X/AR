@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>หนังตะลุง AR</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: sans-serif;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    #puppet-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #puppet {
+      max-height: 95%;
+      object-fit: contain;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s ease;
+      cursor: pointer;
+    }
+
+    #controls {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 15px;
+      z-index: 100;
+    }
+
+    button.control-btn {
+      padding: 12px 25px;
+      font-size: 16px;
+      background: #fcd34d;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+      color: black;
+    }
+    button.control-btn:hover { background: #fbbf24; }
+
+    #backBtn {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #fcd34d;
+      color: black;
+      padding: 8px 15px;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+      z-index: 200;
+      transition: background 0.3s;
+    }
+    #backBtn:hover { background: #fbbf24; }
+  </style>
+</head>
+<body>
+  <!-- ปุ่มย้อนกลับ -->
+  <a href="index.html" id="backBtn">⬅ ย้อนกลับ</a>
+
+  <div id="puppet-container">
+    <img id="puppet" src="pic/ปกติ.png" alt="ตัวหนังตะลุง">
+
+    <div id="controls">
+      <button class="control-btn" onclick="toggleArm()">ยกแขน</button>
+      <button class="control-btn" onclick="toggleMouth()">อ้าปาก</button>
+    </div>
+  </div>
+
+  <script>
+    const puppet = document.getElementById('puppet');
+
+    const normalImg = "pic/ปกติ.png";      // ตัวปกติ
+    const armImg = "pic/แขน.png";          // ตัวยกแขน
+    const mouthImg = "pic/อ้า.png";        // ตัวอ้าปาก
+
+    let isArmUp = false;
+    let isMouthOpen = false;
+
+    function toggleArm() {
+      if (isArmUp) {
+        puppet.src = normalImg;
+      } else {
+        puppet.src = armImg;
+      }
+      isArmUp = !isArmUp;
+      // ปิดอ้าปากถ้าเปิดอยู่
+      if (isMouthOpen) {
+        isMouthOpen = false;
+      }
+    }
+
+    function toggleMouth() {
+      if (isMouthOpen) {
+        puppet.src = normalImg;
+      } else {
+        puppet.src = mouthImg;
+      }
+      isMouthOpen = !isMouthOpen;
+      // ปิดยกแขนถ้ายกอยู่
+      if (isArmUp) {
+        isArmUp = false;
+      }
+    }
+  </script>
+</body>
+</html>
